@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { createActiveTaskViewModel } from "./render.js";
+import { createActiveTaskViewModel, createEditingTaskViewModel } from "./render.js";
 
 const task = {
   id: "task-1",
@@ -36,5 +36,23 @@ test("createActiveTaskViewModel defines future action controls in logical order"
       `Edit task: ${task.title}`,
       `Delete task: ${task.title}`,
     ],
+  );
+});
+
+test("createEditingTaskViewModel exposes edit input, validation, and save/cancel actions", () => {
+  const viewModel = createEditingTaskViewModel(task, "Draft <b>report</b>", "Task title can’t be empty.");
+
+  assert.equal(viewModel.id, task.id);
+  assert.equal(viewModel.inputValue, "Draft <b>report</b>");
+  assert.equal(viewModel.inputId, `edit-title-${task.id}`);
+  assert.equal(viewModel.errorId, `edit-title-error-${task.id}`);
+  assert.equal(viewModel.errorMessage, "Task title can’t be empty.");
+  assert.deepEqual(
+    viewModel.actions.map((action) => action.action),
+    ["save-edit", "cancel-edit"],
+  );
+  assert.deepEqual(
+    viewModel.actions.map((action) => action.ariaLabel),
+    [`Save edited task: ${task.title}`, `Cancel editing task: ${task.title}`],
   );
 });

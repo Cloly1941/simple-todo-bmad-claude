@@ -1,6 +1,6 @@
 # Story 2.1: Persist Tasks in Browser Storage
 
-Status: review
+Status: done
 
 ## Story
 
@@ -199,12 +199,12 @@ This story is only about local browser persistence for the full task array. It m
 
 ## References
 
-- [_bmad-output/planning-artifacts/epics.md](../planning-artifacts/epics.md#L287-L317) — Story 2.1 source requirements and acceptance criteria.
-- [_bmad-output/planning-artifacts/epics.md](../planning-artifacts/epics.md#L108-L129) — Epic 2 goal, persistence requirements, and state flow.
-- [_bmad-output/planning-artifacts/prds/prd-smiple-todo-2026-05-23/prd.md](../planning-artifacts/prds/prd-smiple-todo-2026-05-23/prd.md) — MVP persistence functional requirements FR-21 through FR-23.
-- [_bmad-output/planning-artifacts/architecture.md](../planning-artifacts/architecture.md) — localStorage key, schema, module responsibilities, and state flow.
-- [_bmad-output/planning-artifacts/ux-design-specification.md](../planning-artifacts/ux-design-specification.md) — local-first reliability, accessibility, and UI tone requirements.
-- [_bmad-output/implementation-artifacts/1-4-render-active-tasks-clearly-and-safely.md](1-4-render-active-tasks-clearly-and-safely.md) — previous story implementation notes and active task rendering patterns.
+- [\_bmad-output/planning-artifacts/epics.md](../planning-artifacts/epics.md#L287-L317) — Story 2.1 source requirements and acceptance criteria.
+- [\_bmad-output/planning-artifacts/epics.md](../planning-artifacts/epics.md#L108-L129) — Epic 2 goal, persistence requirements, and state flow.
+- [\_bmad-output/planning-artifacts/prds/prd-smiple-todo-2026-05-23/prd.md](../planning-artifacts/prds/prd-smiple-todo-2026-05-23/prd.md) — MVP persistence functional requirements FR-21 through FR-23.
+- [\_bmad-output/planning-artifacts/architecture.md](../planning-artifacts/architecture.md) — localStorage key, schema, module responsibilities, and state flow.
+- [\_bmad-output/planning-artifacts/ux-design-specification.md](../planning-artifacts/ux-design-specification.md) — local-first reliability, accessibility, and UI tone requirements.
+- [\_bmad-output/implementation-artifacts/1-4-render-active-tasks-clearly-and-safely.md](1-4-render-active-tasks-clearly-and-safely.md) — previous story implementation notes and active task rendering patterns.
 
 ## Dev Agent Record
 

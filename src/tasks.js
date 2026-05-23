@@ -19,6 +19,26 @@ export function addTask(title) {
   };
 }
 
+export function editTaskTitle(tasks, taskId, title) {
+  const trimmedTitle = title.trim();
+
+  if (!trimmedTitle || !tasks.some((task) => task.id === taskId)) {
+    return tasks;
+  }
+
+  const timestamp = new Date().toISOString();
+
+  return tasks.map((task) =>
+    task.id === taskId
+      ? {
+          ...task,
+          title: trimmedTitle,
+          updatedAt: timestamp,
+        }
+      : task,
+  );
+}
+
 export function getActiveTasks(tasks) {
   return tasks.filter((task) => !task.completed);
 }

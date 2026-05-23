@@ -305,6 +305,13 @@ h2 {
   animation: task-pop 260ms ease-out both;
 }
 
+.task-item--editing {
+  background:
+    linear-gradient(90deg, rgb(15 118 110 / 0.14), transparent 52%),
+    var(--color-surface-strong);
+  box-shadow: 7px 7px 0 rgb(15 118 110 / 0.16);
+}
+
 .task-status {
   justify-self: start;
   padding: 0.24rem 0.55rem;
@@ -319,6 +326,27 @@ h2 {
 
 .task-content {
   min-width: 0;
+}
+
+.task-content--editing {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.edit-task-label {
+  color: var(--color-muted-text);
+  font-size: 0.84rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.edit-task-input {
+  min-height: 2.9rem;
+}
+
+.edit-validation-message {
+  max-width: 100%;
 }
 
 .task-title {
@@ -365,6 +393,13 @@ h2 {
   box-shadow: 0 0 0 4px rgb(10 111 104 / 0.14);
 }
 
+.task-action[data-action="save-edit"] {
+  border-color: var(--color-accent);
+  background: rgb(15 118 110 / 0.1);
+  color: var(--color-accent);
+}
+
+.task-action[data-action="cancel-edit"],
 .task-action[data-action="delete"] {
   color: var(--color-error);
 }
