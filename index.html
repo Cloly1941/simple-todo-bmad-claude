@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>smiple-todo</title>
+  </head>
+  <body>
+    <main class="app-shell" aria-labelledby="app-title">
+      <header class="app-header">
+        <p class="eyebrow">Simple local todo list</p>
+        <h1 id="app-title">smiple-todo</h1>
+        <p class="app-description">Capture tasks quickly, keep active work clear, and review completed work when you need it.</p>
+      </header>
+
+      <section class="task-panel" aria-labelledby="add-task-heading">
+        <h2 id="add-task-heading">Add a task</h2>
+        <form class="add-task-form" aria-describedby="task-helper">
+          <label class="task-label" for="task-title">Task title</label>
+          <div class="task-input-row">
+            <input
+              id="task-title"
+              class="task-input"
+              name="taskTitle"
+              type="text"
+              autocomplete="off"
+              placeholder="Write a task to remember"
+            />
+            <button class="add-button" type="submit">Add</button>
+          </div>
+          <p id="task-helper" class="helper-text">Add your first active task above.</p>
+        </form>
+      </section>
+
+      <section class="task-section" aria-labelledby="active-heading">
+        <div class="section-heading-row">
+          <h2 id="active-heading">Active</h2>
+        </div>
+        <p class="empty-state">No active tasks yet. Add a task above.</p>
+      </section>
+
+      <section class="task-section task-section--completed" aria-labelledby="completed-heading">
+        <div class="section-heading-row">
+          <h2 id="completed-heading">Completed</h2>
+        </div>
+        <p class="empty-state empty-state--completed">No completed tasks yet.</p>
+      </section>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
