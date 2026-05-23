@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>smiple-todo UX Design Directions</title>
+  <style>
+    :root {
+      --bg: #f7f7f4;
+      --surface: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --primary: #4f46e5;
+      --important: #fef3c7;
+      --important-border: #f59e0b;
+      --complete: #9ca3af;
+      --danger: #dc2626;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #111827; color: var(--text); }
+    .shell { max-width: 1280px; margin: 0 auto; padding: 32px; }
+    .intro { color: white; margin-bottom: 24px; }
+    .intro h1 { margin: 0 0 8px; font-size: 32px; }
+    .intro p { margin: 0; color: #d1d5db; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 24px; }
+    .direction { border-radius: 24px; overflow: hidden; background: var(--bg); box-shadow: 0 24px 80px rgba(0,0,0,.35); }
+    .label { padding: 16px 20px; background: rgba(255,255,255,.86); border-bottom: 1px solid var(--border); }
+    .label h2 { margin: 0 0 4px; font-size: 18px; }
+    .label p { margin: 0; color: var(--muted); font-size: 14px; }
+    .mock { min-height: 520px; padding: 28px; }
+    .app { max-width: 680px; margin: 0 auto; }
+    .hero h3 { margin: 0 0 6px; font-size: 28px; letter-spacing: -0.03em; }
+    .hero p { margin: 0 0 20px; color: var(--muted); }
+    .form { display: flex; gap: 8px; margin-bottom: 24px; }
+    .input { flex: 1; padding: 13px 14px; border: 1px solid var(--border); border-radius: 12px; background: white; color: var(--muted); }
+    .button { padding: 13px 16px; border: 0; border-radius: 12px; background: var(--primary); color: white; font-weight: 700; }
+    .section { margin-top: 18px; }
+    .section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .section-head h4 { margin: 0; font-size: 14px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+    .count { color: var(--muted); font-size: 13px; }
+    .tasks { display: grid; gap: 10px; }
+    .task { display: flex; gap: 12px; align-items: center; padding: 14px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); }
+    .task.important { background: var(--important); border-color: var(--important-border); }
+    .check { width: 20px; height: 20px; border-radius: 999px; border: 2px solid #cbd5e1; flex: 0 0 auto; }
+    .check.done { background: #d1d5db; border-color: #d1d5db; position: relative; }
+    .check.done:after { content: "✓"; color: white; font-size: 13px; position: absolute; left: 4px; top: 0; }
+    .title { flex: 1; font-weight: 650; }
+    .done-title { color: var(--complete); text-decoration: line-through; font-weight: 500; }
+    .actions { display: flex; gap: 6px; color: var(--muted); font-size: 13px; }
+    .chip { padding: 4px 8px; border-radius: 999px; background: rgba(255,255,255,.7); color: #92400e; font-size: 12px; font-weight: 700; }
+    .muted-panel { padding: 14px; border: 1px dashed var(--border); border-radius: 14px; color: var(--muted); background: rgba(255,255,255,.5); }
+
+    .d2 { --bg: #f8fafc; --primary: #2563eb; --important: #fffbeb; --important-border: #d97706; }
+    .d2 .app { background: white; border: 1px solid var(--border); border-radius: 24px; padding: 24px; }
+    .d2 .task { border-radius: 10px; box-shadow: none; }
+
+    .d3 { --bg: #f5f3ff; --primary: #7c3aed; --important: #fff7ed; --important-border: #fb923c; }
+    .d3 .hero { text-align: center; }
+    .d3 .form { background: white; padding: 8px; border-radius: 18px; box-shadow: 0 12px 32px rgba(124,58,237,.12); }
+    .d3 .input { border: 0; }
+    .d3 .task { box-shadow: 0 8px 24px rgba(88,28,135,.08); border-color: transparent; }
+
+    .d4 { --bg: #f9fafb; --primary: #0f766e; --important: #ecfeff; --important-border: #06b6d4; }
+    .d4 .app { max-width: 760px; }
+    .d4 .tasks { gap: 0; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; background: white; }
+    .d4 .task { border: 0; border-bottom: 1px solid var(--border); border-radius: 0; }
+    .d4 .task:last-child { border-bottom: 0; }
+
+    .d5 { --bg: #fff7ed; --primary: #ea580c; --important: #ffedd5; --important-border: #f97316; }
+    .d5 .mock { background: linear-gradient(135deg, #fff7ed, #ffffff); }
+    .d5 .task { border-radius: 18px; }
+    .d5 .button { border-radius: 999px; }
+    .d5 .input { border-radius: 999px; }
+
+    .d6 { --bg: #f1f5f9; --primary: #334155; --important: #fef9c3; --important-border: #ca8a04; }
+    .d6 .hero h3 { font-size: 24px; }
+    .d6 .mock { padding: 20px; }
+    .d6 .task { padding: 10px 12px; border-radius: 8px; }
+    .d6 .form { margin-bottom: 14px; }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="intro">
+      <h1>smiple-todo UX Design Directions</h1>
+      <p>Six visual directions for a calm, lightweight todo app. Compare layout density, emphasis, and task-row treatment.</p>
+    </section>
+    <section class="grid">
+      <article class="direction d1"><div class="label"><h2>1. Calm Centered</h2><p>Balanced spacing, soft neutrals, straightforward task cards.</p></div><div class="mock"><div class="app"><div class="hero"><h3>smiple-todo</h3><p>Capture tasks quickly and keep important work visible.</p></div><div class="form"><div class="input">Add a task...</div><button class="button">Add</button></div><div class="section"><div class="section-head"><h4>Active</h4><span class="count">3 tasks</span></div><div class="tasks"><div class="task important"><span class="check"></span><span class="title">Submit assignment draft</span><span class="chip">Important</span><span class="actions">Edit Delete</span></div><div class="task"><span class="check"></span><span class="title">Review team notes</span><span class="actions">☆ Edit Delete</span></div><div class="task"><span class="check"></span><span class="title">Buy notebooks</span><span class="actions">☆ Edit Delete</span></div></div></div><div class="section"><div class="section-head"><h4>Completed</h4><span class="count">1 task</span></div><div class="task"><span class="check done"></span><span class="title done-title">Read chapter 3</span></div></div></div></div></article>
+      <article class="direction d2"><div class="label"><h2>2. Productive Panel</h2><p>Contained app card, crisp borders, pragmatic productivity feel.</p></div><div class="mock"><div class="app"><div class="hero"><h3>Today’s tasks</h3><p>A focused list for active work.</p></div><div class="form"><div class="input">What needs attention?</div><button class="button">Add Task</button></div><div class="section"><div class="section-head"><h4>Active</h4><span class="count">Important first</span></div><div class="tasks"><div class="task important"><span class="check"></span><span class="title">Prepare meeting agenda</span><span class="chip">Important</span><span class="actions">Edit Delete</span></div><div class="task"><span class="check"></span><span class="title">Update study plan</span><span class="actions">☆ Edit Delete</span></div></div></div><div class="section"><div class="section-head"><h4>Completed</h4><span class="count">2 done</span></div><div class="muted-panel">Completed tasks are kept here without distracting from active work.</div></div></div></div></article>
+      <article class="direction d3"><div class="label"><h2>3. Friendly Focus</h2><p>Warmer, softer, more encouraging with elevated cards.</p></div><div class="mock"><div class="app"><div class="hero"><h3>Your simple task space</h3><p>Add it, mark what matters, clear it when done.</p></div><div class="form"><div class="input">Type a task title</div><button class="button">Add</button></div><div class="section"><div class="section-head"><h4>Active Tasks</h4><span class="count">3</span></div><div class="tasks"><div class="task important"><span class="check"></span><span class="title">Finish project outline</span><span class="chip">Important</span><span class="actions">Edit Delete</span></div><div class="task"><span class="check"></span><span class="title">Email professor</span><span class="actions">☆ Edit Delete</span></div></div></div><div class="section"><div class="section-head"><h4>Completed</h4><span class="count">Quiet review</span></div><div class="task"><span class="check done"></span><span class="title done-title">Plan tomorrow</span></div></div></div></div></article>
+      <article class="direction d4"><div class="label"><h2>4. Clean List</h2><p>Table-like list clarity for scanning many tasks efficiently.</p></div><div class="mock"><div class="app"><div class="hero"><h3>smiple-todo</h3><p>A clean checklist for active work.</p></div><div class="form"><div class="input">Add a short task title</div><button class="button">Add</button></div><div class="section"><div class="section-head"><h4>Active</h4><span class="count">Sorted by importance</span></div><div class="tasks"><div class="task important"><span class="check"></span><span class="title">Complete onboarding form</span><span class="chip">Important</span><span class="actions">Edit Delete</span></div><div class="task"><span class="check"></span><span class="title">Check lecture slides</span><span class="actions">☆ Edit Delete</span></div><div class="task"><span class="check"></span><span class="title">Call Alex</span><span class="actions">☆ Edit Delete</span></div></div></div><div class="section"><div class="section-head"><h4>Completed</h4><span class="count">1</span></div><div class="tasks"><div class="task"><span class="check done"></span><span class="title done-title">Submit timesheet</span></div></div></div></div></div></article>
+      <article class="direction d5"><div class="label"><h2>5. Warm Minimal</h2><p>Approachable warmth with amber emphasis for important tasks.</p></div><div class="mock"><div class="app"><div class="hero"><h3>What matters today?</h3><p>A lightweight list for remembering important work.</p></div><div class="form"><div class="input">Add your next task</div><button class="button">Add</button></div><div class="section"><div class="section-head"><h4>Active</h4><span class="count">3 open</span></div><div class="tasks"><div class="task important"><span class="check"></span><span class="title">Send weekly update</span><span class="chip">Important</span><span class="actions">Edit Delete</span></div><div class="task"><span class="check"></span><span class="title">Print worksheet</span><span class="actions">☆ Edit Delete</span></div></div></div><div class="section"><div class="section-head"><h4>Completed</h4><span class="count">Done</span></div><div class="muted-panel">No completed tasks yet.</div></div></div></div></article>
+      <article class="direction d6"><div class="label"><h2>6. Compact Utility</h2><p>Denser layout for users who prefer efficiency over spaciousness.</p></div><div class="mock"><div class="app"><div class="hero"><h3>smiple-todo</h3><p>Fast capture. Clear list. Done.</p></div><div class="form"><div class="input">New task</div><button class="button">Add</button></div><div class="section"><div class="section-head"><h4>Active</h4><span class="count">4</span></div><div class="tasks"><div class="task important"><span class="check"></span><span class="title">Pay tuition fee</span><span class="chip">Important</span><span class="actions">Edit Delete</span></div><div class="task"><span class="check"></span><span class="title">Review pull request</span><span class="actions">☆ Edit Delete</span></div><div class="task"><span class="check"></span><span class="title">Schedule study block</span><span class="actions">☆ Edit Delete</span></div></div></div><div class="section"><div class="section-head"><h4>Completed</h4><span class="count">2</span></div><div class="task"><span class="check done"></span><span class="title done-title">Clean inbox</span></div></div></div></div></article>
+    </section>
+  </main>
+</body>
+</html>

@@ -6,4 +6,5 @@ dist
 _bmad
 _bmad-output
 .claude
-
+CLAUDE.md
+skills-lock.json
