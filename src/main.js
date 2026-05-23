@@ -1,5 +1,6 @@
 import "./styles.css";
 import { renderActiveTasks } from "./render.js";
+import { loadTasks, saveTasks } from "./storage.js";
 import { addTask } from "./tasks.js";
 import { validateTaskTitle } from "./validation.js";
 
@@ -7,7 +8,7 @@ const addTaskForm = document.querySelector(".add-task-form");
 const taskTitleInput = document.querySelector("#task-title");
 const taskTitleError = document.querySelector("#task-title-error");
 
-let tasks = [];
+let tasks = loadTasks();
 
 renderActiveTasks(tasks);
 
@@ -35,6 +36,7 @@ addTaskForm?.addEventListener("submit", (event) => {
   }
 
   tasks = [...tasks, task];
+  saveTasks(tasks);
   renderActiveTasks(tasks);
   taskTitleInput.value = "";
   taskTitleInput.focus();
