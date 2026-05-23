@@ -25,10 +25,12 @@
               type="text"
               autocomplete="off"
               placeholder="Write a task to remember"
+              aria-describedby="task-helper"
             />
             <button class="add-button" type="submit">Add</button>
           </div>
           <p id="task-helper" class="helper-text">Add your first active task above.</p>
+          <p id="task-title-error" class="validation-message" hidden>Task title can’t be empty.</p>
         </form>
       </section>
 
