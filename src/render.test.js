@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { createActiveTaskViewModel, createEditingTaskViewModel } from "./render.js";
+import { createActiveTaskViewModel, createCompletedTaskViewModel, createEditingTaskViewModel } from "./render.js";
 
 const task = {
   id: "task-1",
@@ -55,4 +55,15 @@ test("createEditingTaskViewModel exposes edit input, validation, and save/cancel
     viewModel.actions.map((action) => action.ariaLabel),
     [`Save edited task: ${task.title}`, `Cancel editing task: ${task.title}`],
   );
+});
+
+test("createCompletedTaskViewModel exposes completed status with a delete action", () => {
+  const viewModel = createCompletedTaskViewModel({ ...task, completed: true });
+
+  assert.equal(viewModel.id, task.id);
+  assert.equal(viewModel.title, task.title);
+  assert.equal(viewModel.status, "Completed");
+  assert.deepEqual(viewModel.actions, [
+    { action: "delete", label: "Delete", ariaLabel: `Delete task: ${task.title}` },
+  ]);
 });

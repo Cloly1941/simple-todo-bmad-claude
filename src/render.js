@@ -1,4 +1,4 @@
-import { getActiveTasks } from "./tasks.js";
+import { getActiveTasks, getCompletedTasks } from "./tasks.js";
 
 export function getAppRoot() {
   return document.querySelector(".app-shell");
@@ -20,6 +20,20 @@ export function renderActiveTasks(tasks, editState = {}) {
   );
   activeEmptyState.hidden = activeTasks.length > 0;
   activeList.hidden = activeTasks.length === 0;
+}
+
+export function renderCompletedTasks(tasks) {
+  const completedList = document.querySelector("[data-completed-list]");
+  const completedEmptyState = document.querySelector("[data-completed-empty]");
+
+  if (!completedList || !completedEmptyState) {
+    return;
+  }
+
+  const completedTasks = getCompletedTasks(tasks);
+  completedList.replaceChildren(...completedTasks.map((task) => createCompletedTaskItem(task)));
+  completedEmptyState.hidden = completedTasks.length > 0;
+  completedList.hidden = completedTasks.length === 0;
 }
 
 export function createActiveTaskItem(task) {
@@ -81,6 +95,43 @@ export function createEditingTaskViewModel(task, inputValue = task.title, errorM
       { action: "cancel-edit", label: "Cancel", ariaLabel: `Cancel editing task: ${task.title}` },
     ],
   };
+}
+
+export function createCompletedTaskViewModel(task) {
+  return {
+    id: task.id,
+    title: task.title,
+    status: "Completed",
+    actions: [{ action: "delete", label: "Delete", ariaLabel: `Delete task: ${task.title}` }],
+  };
+}
+
+function createCompletedTaskItem(task) {
+  const viewModel = createCompletedTaskViewModel(task);
+  const item = document.createElement("li");
+  item.className = "task-item task-item--completed";
+  item.dataset.taskId = viewModel.id;
+
+  const status = document.createElement("span");
+  status.className = "task-status task-status--completed";
+  status.textContent = viewModel.status;
+
+  const content = document.createElement("div");
+  content.className = "task-content";
+
+  const title = document.createElement("span");
+  title.className = "task-title task-title--completed";
+  title.textContent = viewModel.title;
+
+  content.append(title);
+
+  const actions = document.createElement("div");
+  actions.className = "task-actions";
+  actions.append(...viewModel.actions.map((action) => createTaskAction(action)));
+
+  item.append(status, content, actions);
+
+  return item;
 }
 
 function createEditingTaskItem(task, editState) {

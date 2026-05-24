@@ -312,6 +312,14 @@ h2 {
   box-shadow: 7px 7px 0 rgb(15 118 110 / 0.16);
 }
 
+.task-item--completed {
+  border-color: var(--color-border);
+  background:
+    linear-gradient(90deg, rgb(124 117 109 / 0.1), transparent 52%),
+    #fffdf8;
+  box-shadow: 5px 5px 0 rgb(124 117 109 / 0.1);
+}
+
 .task-status {
   justify-self: start;
   padding: 0.24rem 0.55rem;
@@ -322,6 +330,10 @@ h2 {
   font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.task-status--completed {
+  background: var(--color-completed);
 }
 
 .task-content {
@@ -356,6 +368,13 @@ h2 {
   font-weight: 900;
   line-height: 1.35;
   overflow-wrap: anywhere;
+}
+
+.task-title--completed {
+  color: var(--color-completed);
+  text-decoration: line-through;
+  text-decoration-thickness: 0.12em;
+  text-decoration-color: rgb(124 117 109 / 0.56);
 }
 
 .task-actions {

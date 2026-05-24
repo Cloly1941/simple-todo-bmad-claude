@@ -39,8 +39,38 @@ export function editTaskTitle(tasks, taskId, title) {
   );
 }
 
+export function completeTask(tasks, taskId) {
+  if (!tasks.some((task) => task.id === taskId)) {
+    return tasks;
+  }
+
+  const timestamp = new Date().toISOString();
+
+  return tasks.map((task) =>
+    task.id === taskId
+      ? {
+          ...task,
+          completed: true,
+          updatedAt: timestamp,
+        }
+      : task,
+  );
+}
+
+export function deleteTask(tasks, taskId) {
+  if (!tasks.some((task) => task.id === taskId)) {
+    return tasks;
+  }
+
+  return tasks.filter((task) => task.id !== taskId);
+}
+
 export function getActiveTasks(tasks) {
   return tasks.filter((task) => !task.completed);
+}
+
+export function getCompletedTasks(tasks) {
+  return tasks.filter((task) => task.completed);
 }
 
 function createTaskId() {

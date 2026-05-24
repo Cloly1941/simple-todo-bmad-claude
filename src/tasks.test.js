@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { addTask, editTaskTitle, getActiveTasks, taskModelFields } from "./tasks.js";
+import { addTask, completeTask, deleteTask, editTaskTitle, getActiveTasks, getCompletedTasks, taskModelFields } from "./tasks.js";
 
 test("addTask creates a trimmed active task with the approved schema", () => {
   const task = addTask("  Finish assignment  ");
@@ -65,4 +65,74 @@ test("editTaskTitle leaves tasks unchanged for empty titles or unknown ids", () 
 
   assert.equal(editTaskTitle(tasks, "missing", "Final report"), tasks);
   assert.equal(editTaskTitle(tasks, task.id, "   "), tasks);
+});
+
+test("completeTask marks only the matching task completed and refreshes updatedAt", () => {
+  const targetTask = {
+    id: "task-1",
+    title: "Draft report",
+    completed: false,
+    important: true,
+    createdAt: "2026-05-23T00:00:00.000Z",
+    updatedAt: "2026-05-23T00:00:00.000Z",
+  };
+  const otherTask = {
+    id: "task-2",
+    title: "Read notes",
+    completed: false,
+    important: false,
+    createdAt: "2026-05-23T00:00:01.000Z",
+    updatedAt: "2026-05-23T00:00:01.000Z",
+  };
+  const tasks = [targetTask, otherTask];
+
+  const completedTasks = completeTask(tasks, "task-1");
+
+  assert.equal(completedTasks[0].completed, true);
+  assert.equal(completedTasks[0].title, targetTask.title);
+  assert.equal(completedTasks[0].important, targetTask.important);
+  assert.equal(completedTasks[0].createdAt, targetTask.createdAt);
+  assert.notEqual(completedTasks[0].updatedAt, targetTask.updatedAt);
+  assert.deepEqual(Object.keys(completedTasks[0]), taskModelFields);
+  assert.equal(completedTasks[1], otherTask);
+  assert.equal(tasks[0], targetTask);
+});
+
+test("completeTask leaves tasks unchanged for unknown ids", () => {
+  const task = addTask("Draft report");
+  const tasks = [task];
+
+  assert.equal(completeTask(tasks, "missing"), tasks);
+});
+
+test("getCompletedTasks derives only completed tasks without mutating state", () => {
+  const activeTask = addTask("Read notes");
+  const completedTask = { ...addTask("Submit quiz"), completed: true };
+  const tasks = [activeTask, completedTask];
+
+  assert.deepEqual(getCompletedTasks(tasks), [completedTask]);
+  assert.equal(tasks.length, 2);
+});
+
+test("deleteTask removes only the matching task without mutating state", () => {
+  const targetTask = addTask("Draft report");
+  const otherTask = addTask("Read notes");
+  const completedTask = { ...addTask("Submit quiz"), completed: true };
+  const tasks = [targetTask, otherTask, completedTask];
+
+  const remainingTasks = deleteTask(tasks, targetTask.id);
+
+  assert.deepEqual(remainingTasks, [otherTask, completedTask]);
+  assert.equal(remainingTasks[0], otherTask);
+  assert.equal(remainingTasks[1], completedTask);
+  assert.deepEqual(Object.keys(remainingTasks[0]), taskModelFields);
+  assert.deepEqual(Object.keys(remainingTasks[1]), taskModelFields);
+  assert.deepEqual(tasks, [targetTask, otherTask, completedTask]);
+});
+
+test("deleteTask leaves tasks unchanged for unknown ids", () => {
+  const task = addTask("Draft report");
+  const tasks = [task];
+
+  assert.equal(deleteTask(tasks, "missing"), tasks);
 });

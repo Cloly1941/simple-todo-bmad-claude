@@ -1,7 +1,7 @@
 import "./styles.css";
-import { renderActiveTasks } from "./render.js";
+import { renderActiveTasks, renderCompletedTasks } from "./render.js";
 import { loadTasks, saveTasks } from "./storage.js";
-import { addTask, editTaskTitle } from "./tasks.js";
+import { addTask, completeTask, deleteTask, editTaskTitle } from "./tasks.js";
 import { validateTaskTitle } from "./validation.js";
 
 const addTaskForm = document.querySelector(".add-task-form");
@@ -54,6 +54,19 @@ document.querySelector("[data-active-list]")?.addEventListener("click", (event) 
 
   const taskId = taskItem.dataset.taskId;
 
+  if (actionButton.dataset.action === "complete") {
+    tasks = completeTask(tasks, taskId);
+    saveTasks(tasks);
+    editState = {};
+    renderTasks();
+    return;
+  }
+
+  if (actionButton.dataset.action === "delete") {
+    deleteTaskById(taskId);
+    return;
+  }
+
   if (actionButton.dataset.action === "edit") {
     editState = { taskId };
     renderTasks();
@@ -92,8 +105,27 @@ document.querySelector("[data-active-list]")?.addEventListener("click", (event) 
   }
 });
 
+document.querySelector("[data-completed-list]")?.addEventListener("click", (event) => {
+  const actionButton = event.target.closest("[data-action]");
+  const taskItem = actionButton?.closest("[data-task-id]");
+
+  if (!actionButton || !taskItem || actionButton.dataset.action !== "delete") {
+    return;
+  }
+
+  deleteTaskById(taskItem.dataset.taskId);
+});
+
+function deleteTaskById(taskId) {
+  tasks = deleteTask(tasks, taskId);
+  saveTasks(tasks);
+  editState = {};
+  renderTasks();
+}
+
 function renderTasks() {
   renderActiveTasks(tasks, editState);
+  renderCompletedTasks(tasks);
 }
 
 function focusEditInput(taskId) {
