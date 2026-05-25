@@ -39,6 +39,61 @@ test("getActiveTasks derives only incomplete tasks without mutating state", () =
   assert.equal(tasks.length, 2);
 });
 
+test("getActiveTasks returns important active tasks first while preserving stable group order", () => {
+  const normalFirst = {
+    id: "task-1",
+    title: "Normal first",
+    completed: false,
+    important: false,
+    createdAt: "2026-05-23T00:00:00.000Z",
+    updatedAt: "2026-05-23T00:00:00.000Z",
+  };
+  const importantFirst = {
+    id: "task-2",
+    title: "Important first",
+    completed: false,
+    important: true,
+    createdAt: "2026-05-23T00:00:01.000Z",
+    updatedAt: "2026-05-23T00:00:01.000Z",
+  };
+  const normalSecond = {
+    id: "task-3",
+    title: "Normal second",
+    completed: false,
+    important: false,
+    createdAt: "2026-05-23T00:00:02.000Z",
+    updatedAt: "2026-05-23T00:00:02.000Z",
+  };
+  const importantSecond = {
+    id: "task-4",
+    title: "Important second",
+    completed: false,
+    important: true,
+    createdAt: "2026-05-23T00:00:03.000Z",
+    updatedAt: "2026-05-23T00:00:03.000Z",
+  };
+  const completedImportant = {
+    id: "task-5",
+    title: "Completed important",
+    completed: true,
+    important: true,
+    createdAt: "2026-05-23T00:00:04.000Z",
+    updatedAt: "2026-05-23T00:00:04.000Z",
+  };
+  const tasks = [normalFirst, importantFirst, normalSecond, importantSecond, completedImportant];
+
+  const activeTasks = getActiveTasks(tasks);
+
+  assert.deepEqual(activeTasks, [importantFirst, importantSecond, normalFirst, normalSecond]);
+  assert.deepEqual(tasks, [normalFirst, importantFirst, normalSecond, importantSecond, completedImportant]);
+  assert.deepEqual(activeTasks.map((task) => Object.keys(task)), [
+    taskModelFields,
+    taskModelFields,
+    taskModelFields,
+    taskModelFields,
+  ]);
+});
+
 test("editTaskTitle trims and updates only the matching task title and updatedAt", () => {
   const targetTask = {
     id: "task-1",

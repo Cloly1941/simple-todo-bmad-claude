@@ -84,7 +84,8 @@ export function deleteTask(tasks, taskId) {
 }
 
 export function getActiveTasks(tasks) {
-  return tasks.filter((task) => !task.completed);
+  const activeTasks = tasks.filter((task) => !task.completed);
+  return [...activeTasks.filter((task) => task.important), ...activeTasks.filter((task) => !task.important)];
 }
 
 export function getCompletedTasks(tasks) {
