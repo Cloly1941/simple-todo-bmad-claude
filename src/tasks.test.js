@@ -1,7 +1,16 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { addTask, completeTask, deleteTask, editTaskTitle, getActiveTasks, getCompletedTasks, taskModelFields } from "./tasks.js";
+import {
+  addTask,
+  completeTask,
+  deleteTask,
+  editTaskTitle,
+  getActiveTasks,
+  getCompletedTasks,
+  taskModelFields,
+  toggleTaskImportant,
+} from "./tasks.js";
 
 test("addTask creates a trimmed active task with the approved schema", () => {
   const task = addTask("  Finish assignment  ");
@@ -103,6 +112,65 @@ test("completeTask leaves tasks unchanged for unknown ids", () => {
   const tasks = [task];
 
   assert.equal(completeTask(tasks, "missing"), tasks);
+});
+
+test("toggleTaskImportant marks only the matching task important and refreshes updatedAt", () => {
+  const targetTask = {
+    id: "task-1",
+    title: "Draft report",
+    completed: false,
+    important: false,
+    createdAt: "2026-05-23T00:00:00.000Z",
+    updatedAt: "2026-05-23T00:00:00.000Z",
+  };
+  const otherTask = {
+    id: "task-2",
+    title: "Read notes",
+    completed: false,
+    important: false,
+    createdAt: "2026-05-23T00:00:01.000Z",
+    updatedAt: "2026-05-23T00:00:01.000Z",
+  };
+  const tasks = [targetTask, otherTask];
+
+  const updatedTasks = toggleTaskImportant(tasks, "task-1");
+
+  assert.equal(updatedTasks[0].important, true);
+  assert.equal(updatedTasks[0].id, targetTask.id);
+  assert.equal(updatedTasks[0].title, targetTask.title);
+  assert.equal(updatedTasks[0].completed, targetTask.completed);
+  assert.equal(updatedTasks[0].createdAt, targetTask.createdAt);
+  assert.notEqual(updatedTasks[0].updatedAt, targetTask.updatedAt);
+  assert.deepEqual(Object.keys(updatedTasks[0]), taskModelFields);
+  assert.equal(updatedTasks[1], otherTask);
+  assert.equal(tasks[0], targetTask);
+});
+
+test("toggleTaskImportant unmarks only the matching important task", () => {
+  const targetTask = {
+    id: "task-1",
+    title: "Draft report",
+    completed: false,
+    important: true,
+    createdAt: "2026-05-23T00:00:00.000Z",
+    updatedAt: "2026-05-23T00:00:00.000Z",
+  };
+  const tasks = [targetTask];
+
+  const updatedTasks = toggleTaskImportant(tasks, "task-1");
+
+  assert.equal(updatedTasks[0].important, false);
+  assert.equal(updatedTasks[0].createdAt, targetTask.createdAt);
+  assert.notEqual(updatedTasks[0].updatedAt, targetTask.updatedAt);
+  assert.deepEqual(Object.keys(updatedTasks[0]), taskModelFields);
+  assert.equal(tasks[0], targetTask);
+});
+
+test("toggleTaskImportant leaves tasks unchanged for unknown ids", () => {
+  const task = addTask("Draft report");
+  const tasks = [task];
+
+  assert.equal(toggleTaskImportant(tasks, "missing"), tasks);
 });
 
 test("getCompletedTasks derives only completed tasks without mutating state", () => {

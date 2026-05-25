@@ -1,7 +1,7 @@
 import "./styles.css";
 import { renderActiveTasks, renderCompletedTasks } from "./render.js";
 import { loadTasks, saveTasks } from "./storage.js";
-import { addTask, completeTask, deleteTask, editTaskTitle } from "./tasks.js";
+import { addTask, completeTask, deleteTask, editTaskTitle, toggleTaskImportant } from "./tasks.js";
 import { validateTaskTitle } from "./validation.js";
 
 const addTaskForm = document.querySelector(".add-task-form");
@@ -64,6 +64,14 @@ document.querySelector("[data-active-list]")?.addEventListener("click", (event) 
 
   if (actionButton.dataset.action === "delete") {
     deleteTaskById(taskId);
+    return;
+  }
+
+  if (actionButton.dataset.action === "toggle-important") {
+    tasks = toggleTaskImportant(tasks, taskId);
+    saveTasks(tasks);
+    editState = {};
+    renderTasks();
     return;
   }
 

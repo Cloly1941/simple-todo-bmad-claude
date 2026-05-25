@@ -57,6 +57,24 @@ export function completeTask(tasks, taskId) {
   );
 }
 
+export function toggleTaskImportant(tasks, taskId) {
+  if (!tasks.some((task) => task.id === taskId)) {
+    return tasks;
+  }
+
+  const timestamp = new Date().toISOString();
+
+  return tasks.map((task) =>
+    task.id === taskId
+      ? {
+          ...task,
+          important: !task.important,
+          updatedAt: timestamp,
+        }
+      : task,
+  );
+}
+
 export function deleteTask(tasks, taskId) {
   if (!tasks.some((task) => task.id === taskId)) {
     return tasks;

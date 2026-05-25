@@ -418,6 +418,12 @@ h2 {
   color: var(--color-accent);
 }
 
+.task-action[data-action="toggle-important"][aria-pressed="true"] {
+  border-color: color-mix(in srgb, var(--color-important) 72%, var(--color-text));
+  background: color-mix(in srgb, var(--color-important) 42%, var(--color-surface-strong));
+  box-shadow: inset 0 0 0 1px rgb(33 22 17 / 0.12);
+}
+
 .task-action[data-action="cancel-edit"],
 .task-action[data-action="delete"] {
   color: var(--color-error);

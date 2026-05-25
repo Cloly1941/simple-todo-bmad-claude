@@ -21,7 +21,7 @@ test("createActiveTaskViewModel preserves task title for safe text rendering", (
   assert.equal(viewModel.actionsLabel, `Actions for ${task.title}`);
 });
 
-test("createActiveTaskViewModel defines future action controls in logical order", () => {
+test("createActiveTaskViewModel defines action controls in logical order", () => {
   const viewModel = createActiveTaskViewModel(task);
 
   assert.deepEqual(
@@ -37,6 +37,31 @@ test("createActiveTaskViewModel defines future action controls in logical order"
       `Delete task: ${task.title}`,
     ],
   );
+});
+
+test("createActiveTaskViewModel exposes unpressed important action state", () => {
+  const viewModel = createActiveTaskViewModel(task);
+  const importantAction = viewModel.actions.find((action) => action.action === "toggle-important");
+
+  assert.deepEqual(importantAction, {
+    action: "toggle-important",
+    label: "Important",
+    ariaLabel: `Mark important: ${task.title}`,
+    ariaPressed: "false",
+  });
+});
+
+test("createActiveTaskViewModel exposes pressed important action state", () => {
+  const importantTask = { ...task, important: true };
+  const viewModel = createActiveTaskViewModel(importantTask);
+  const importantAction = viewModel.actions.find((action) => action.action === "toggle-important");
+
+  assert.deepEqual(importantAction, {
+    action: "toggle-important",
+    label: "Unmark",
+    ariaLabel: `Remove important: ${task.title}`,
+    ariaPressed: "true",
+  });
 });
 
 test("createEditingTaskViewModel exposes edit input, validation, and save/cancel actions", () => {

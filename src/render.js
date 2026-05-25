@@ -74,7 +74,12 @@ export function createActiveTaskViewModel(task) {
     actionsLabel: `Actions for ${task.title}`,
     actions: [
       { action: "complete", label: "Complete", ariaLabel: `Complete task: ${task.title}` },
-      { action: "toggle-important", label: "Important", ariaLabel: `Mark important: ${task.title}` },
+      {
+        action: "toggle-important",
+        label: task.important ? "Unmark" : "Important",
+        ariaLabel: task.important ? `Remove important: ${task.title}` : `Mark important: ${task.title}`,
+        ariaPressed: task.important ? "true" : "false",
+      },
       { action: "edit", label: "Edit", ariaLabel: `Edit task: ${task.title}` },
       { action: "delete", label: "Delete", ariaLabel: `Delete task: ${task.title}` },
     ],
@@ -181,12 +186,17 @@ function createEditingTaskItem(task, editState) {
   return item;
 }
 
-function createTaskAction({ action, label, ariaLabel }) {
+function createTaskAction({ action, label, ariaLabel, ariaPressed }) {
   const button = document.createElement("button");
   button.className = "task-action";
   button.type = "button";
   button.dataset.action = action;
   button.setAttribute("aria-label", ariaLabel);
+
+  if (ariaPressed) {
+    button.setAttribute("aria-pressed", ariaPressed);
+  }
+
   button.textContent = label;
   return button;
 }
