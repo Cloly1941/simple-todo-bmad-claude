@@ -39,7 +39,7 @@ export function renderCompletedTasks(tasks) {
 export function createActiveTaskItem(task) {
   const viewModel = createActiveTaskViewModel(task);
   const item = document.createElement("li");
-  item.className = "task-item";
+  item.className = viewModel.isImportant ? "task-item task-item--important" : "task-item";
   item.dataset.taskId = viewModel.id;
 
   const status = document.createElement("span");
@@ -52,6 +52,13 @@ export function createActiveTaskItem(task) {
   const title = document.createElement("span");
   title.className = "task-title";
   title.textContent = viewModel.title;
+
+  if (viewModel.importantLabel) {
+    const marker = document.createElement("span");
+    marker.className = "task-important-marker";
+    marker.textContent = viewModel.importantLabel;
+    content.append(marker);
+  }
 
   content.append(title);
 
@@ -71,6 +78,8 @@ export function createActiveTaskViewModel(task) {
     id: task.id,
     title: task.title,
     status: "Active",
+    isImportant: task.important,
+    importantLabel: task.important ? "Important" : "",
     actionsLabel: `Actions for ${task.title}`,
     actions: [
       { action: "complete", label: "Complete", ariaLabel: `Complete task: ${task.title}` },
@@ -89,6 +98,8 @@ export function createActiveTaskViewModel(task) {
 export function createEditingTaskViewModel(task, inputValue = task.title, errorMessage = "") {
   return {
     id: task.id,
+    isImportant: task.important,
+    importantLabel: task.important ? "Important" : "",
     status: "Editing",
     inputId: `edit-title-${task.id}`,
     errorId: `edit-title-error-${task.id}`,
@@ -142,7 +153,7 @@ function createCompletedTaskItem(task) {
 function createEditingTaskItem(task, editState) {
   const viewModel = createEditingTaskViewModel(task, editState.value ?? task.title, editState.errorMessage ?? "");
   const item = document.createElement("li");
-  item.className = "task-item task-item--editing";
+  item.className = viewModel.isImportant ? "task-item task-item--important task-item--editing" : "task-item task-item--editing";
   item.dataset.taskId = viewModel.id;
 
   const status = document.createElement("span");
@@ -151,6 +162,13 @@ function createEditingTaskItem(task, editState) {
 
   const content = document.createElement("div");
   content.className = "task-content task-content--editing";
+
+  if (viewModel.importantLabel) {
+    const marker = document.createElement("span");
+    marker.className = "task-important-marker";
+    marker.textContent = viewModel.importantLabel;
+    content.append(marker);
+  }
 
   const label = document.createElement("label");
   label.className = "edit-task-label";

@@ -64,10 +64,28 @@ test("createActiveTaskViewModel exposes pressed important action state", () => {
   });
 });
 
+
+test("createActiveTaskViewModel exposes important visual state", () => {
+  const importantTask = { ...task, important: true };
+  const viewModel = createActiveTaskViewModel(importantTask);
+
+  assert.equal(viewModel.isImportant, true);
+  assert.equal(viewModel.importantLabel, "Important");
+});
+
+test("createActiveTaskViewModel omits important visual marker for normal tasks", () => {
+  const viewModel = createActiveTaskViewModel(task);
+
+  assert.equal(viewModel.isImportant, false);
+  assert.equal(viewModel.importantLabel, "");
+});
+
 test("createEditingTaskViewModel exposes edit input, validation, and save/cancel actions", () => {
   const viewModel = createEditingTaskViewModel(task, "Draft <b>report</b>", "Task title can’t be empty.");
 
   assert.equal(viewModel.id, task.id);
+  assert.equal(viewModel.isImportant, false);
+  assert.equal(viewModel.importantLabel, "");
   assert.equal(viewModel.inputValue, "Draft <b>report</b>");
   assert.equal(viewModel.inputId, `edit-title-${task.id}`);
   assert.equal(viewModel.errorId, `edit-title-error-${task.id}`);
@@ -80,6 +98,14 @@ test("createEditingTaskViewModel exposes edit input, validation, and save/cancel
     viewModel.actions.map((action) => action.ariaLabel),
     [`Save edited task: ${task.title}`, `Cancel editing task: ${task.title}`],
   );
+});
+
+test("createEditingTaskViewModel preserves important visual state while editing", () => {
+  const importantTask = { ...task, important: true };
+  const viewModel = createEditingTaskViewModel(importantTask);
+
+  assert.equal(viewModel.isImportant, true);
+  assert.equal(viewModel.importantLabel, "Important");
 });
 
 test("createCompletedTaskViewModel exposes completed status with a delete action", () => {
