@@ -44,6 +44,7 @@ export function createActiveTaskItem(task) {
 
   const status = document.createElement("span");
   status.className = "task-status";
+  status.setAttribute("aria-label", viewModel.statusDescription);
   status.textContent = viewModel.status;
 
   const content = document.createElement("div");
@@ -55,6 +56,7 @@ export function createActiveTaskItem(task) {
 
   if (viewModel.importantLabel) {
     const marker = document.createElement("span");
+    marker.id = viewModel.importantMarkerId;
     marker.className = "task-important-marker";
     marker.textContent = viewModel.importantLabel;
     content.append(marker);
@@ -78,8 +80,10 @@ export function createActiveTaskViewModel(task) {
     id: task.id,
     title: task.title,
     status: "Active",
+    statusDescription: "Task status: Active",
     isImportant: task.important,
     importantLabel: task.important ? "Important" : "",
+    importantMarkerId: task.important ? `important-marker-${task.id}` : "",
     actionsLabel: `Actions for ${task.title}`,
     actions: [
       { action: "complete", label: "Complete", ariaLabel: `Complete task: ${task.title}` },
@@ -100,11 +104,13 @@ export function createEditingTaskViewModel(task, inputValue = task.title, errorM
     id: task.id,
     isImportant: task.important,
     importantLabel: task.important ? "Important" : "",
+    importantMarkerId: task.important ? `important-marker-${task.id}` : "",
     status: "Editing",
     inputId: `edit-title-${task.id}`,
     errorId: `edit-title-error-${task.id}`,
     inputValue,
     errorMessage,
+    inputDescriptionIds: errorMessage ? `edit-title-error-${task.id}` : "",
     actionsLabel: `Edit actions for ${task.title}`,
     actions: [
       { action: "save-edit", label: "Save", ariaLabel: `Save edited task: ${task.title}` },
@@ -118,6 +124,7 @@ export function createCompletedTaskViewModel(task) {
     id: task.id,
     title: task.title,
     status: "Completed",
+    statusDescription: "Task status: Completed",
     actions: [{ action: "delete", label: "Delete", ariaLabel: `Delete task: ${task.title}` }],
   };
 }
@@ -130,6 +137,7 @@ function createCompletedTaskItem(task) {
 
   const status = document.createElement("span");
   status.className = "task-status task-status--completed";
+  status.setAttribute("aria-label", viewModel.statusDescription);
   status.textContent = viewModel.status;
 
   const content = document.createElement("div");
@@ -158,6 +166,7 @@ function createEditingTaskItem(task, editState) {
 
   const status = document.createElement("span");
   status.className = "task-status";
+  status.setAttribute("aria-label", `Task status: ${viewModel.status}`);
   status.textContent = viewModel.status;
 
   const content = document.createElement("div");
@@ -165,6 +174,7 @@ function createEditingTaskItem(task, editState) {
 
   if (viewModel.importantLabel) {
     const marker = document.createElement("span");
+    marker.id = viewModel.importantMarkerId;
     marker.className = "task-important-marker";
     marker.textContent = viewModel.importantLabel;
     content.append(marker);
@@ -180,7 +190,10 @@ function createEditingTaskItem(task, editState) {
   input.id = viewModel.inputId;
   input.name = "edit-title";
   input.value = viewModel.inputValue;
-  input.setAttribute("aria-describedby", viewModel.errorId);
+
+  if (viewModel.inputDescriptionIds) {
+    input.setAttribute("aria-describedby", viewModel.inputDescriptionIds);
+  }
 
   const error = document.createElement("p");
   error.className = "validation-message edit-validation-message";

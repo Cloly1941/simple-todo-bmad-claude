@@ -108,6 +108,29 @@ test("createEditingTaskViewModel preserves important visual state while editing"
   assert.equal(viewModel.importantLabel, "Important");
 });
 
+
+test("createActiveTaskViewModel exposes descriptive status and important marker identifiers", () => {
+  const importantTask = { ...task, important: true };
+  const viewModel = createActiveTaskViewModel(importantTask);
+
+  assert.equal(viewModel.statusDescription, "Task status: Active");
+  assert.equal(viewModel.importantMarkerId, `important-marker-${task.id}`);
+});
+
+test("createCompletedTaskViewModel exposes descriptive completed status", () => {
+  const viewModel = createCompletedTaskViewModel({ ...task, completed: true });
+
+  assert.equal(viewModel.statusDescription, "Task status: Completed");
+});
+
+test("createEditingTaskViewModel exposes validation description only when an error exists", () => {
+  const cleanViewModel = createEditingTaskViewModel(task);
+  const errorViewModel = createEditingTaskViewModel(task, "", "Task title can’t be empty.");
+
+  assert.equal(cleanViewModel.inputDescriptionIds, "");
+  assert.equal(errorViewModel.inputDescriptionIds, `edit-title-error-${task.id}`);
+});
+
 test("createCompletedTaskViewModel exposes completed status with a delete action", () => {
   const viewModel = createCompletedTaskViewModel({ ...task, completed: true });
 

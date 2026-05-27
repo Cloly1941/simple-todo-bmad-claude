@@ -70,6 +70,7 @@ button:focus-visible,
 input:focus-visible {
   outline: 3px solid var(--color-focus);
   outline-offset: 4px;
+  box-shadow: 0 0 0 6px rgb(10 111 104 / 0.12);
 }
 
 .app-shell {
@@ -348,6 +349,7 @@ h2 {
 
 .task-content {
   min-width: 0;
+  max-width: 100%;
 }
 
 .task-important-marker {
@@ -412,6 +414,7 @@ h2 {
 }
 
 .task-action {
+  min-width: 2.75rem;
   min-height: 2.75rem;
   padding: 0.62rem 0.78rem;
   border: 2px solid var(--color-border);
@@ -531,6 +534,12 @@ h2 {
 
   .task-actions {
     grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 420px) {
+  .task-action {
+    flex: 1 1 calc(50% - 0.5rem);
   }
 }
 
