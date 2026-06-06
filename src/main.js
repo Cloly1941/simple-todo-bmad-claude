@@ -11,7 +11,11 @@ const taskTitleError = document.querySelector("#task-title-error");
 let tasks = loadTasks();
 let editState = {};
 
-renderTasks();
+try {
+  renderTasks();
+} finally {
+  markAppReady();
+}
 
 addTaskForm?.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -134,6 +138,20 @@ function deleteTaskById(taskId) {
 function renderTasks() {
   renderActiveTasks(tasks, editState);
   renderCompletedTasks(tasks);
+}
+
+function markAppReady() {
+  const loadingScreen = document.querySelector("[data-loading-screen]");
+
+  document.body.classList.remove("is-loading");
+  document.body.classList.add("is-ready");
+  document.querySelector("[data-app-shell]")?.setAttribute("data-app-ready", "true");
+
+  if (loadingScreen) {
+    const hideLoadingScreen = () => loadingScreen.setAttribute("hidden", "");
+    loadingScreen.addEventListener("transitionend", hideLoadingScreen, { once: true });
+    window.setTimeout(hideLoadingScreen, 260);
+  }
 }
 
 function focusEditInput(taskId) {

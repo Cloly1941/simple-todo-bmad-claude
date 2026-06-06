@@ -4,9 +4,121 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>smiple-todo</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --color-background: #fff6e6;
+        --color-surface: #fffaf0;
+        --color-text: #211611;
+        --color-muted-text: #745f50;
+        --color-border: #e8cda2;
+        --color-primary: #c2471b;
+        --color-accent: #0f766e;
+        --color-ink-shadow: rgb(33 22 17 / 0.14);
+        --font-display: Georgia, "Times New Roman", serif;
+        --font-body: "Trebuchet MS", "Gill Sans", sans-serif;
+      }
+
+      body.is-loading {
+        min-width: 320px;
+        min-height: 100vh;
+        margin: 0;
+        background:
+          radial-gradient(circle at 12% 12%, rgb(255 209 102 / 0.7), transparent 12rem),
+          radial-gradient(circle at 88% 2%, rgb(15 118 110 / 0.18), transparent 16rem),
+          linear-gradient(135deg, rgb(255 246 230 / 0.96), rgb(255 236 198 / 0.88));
+        color: var(--color-text);
+        font-family: var(--font-body);
+      }
+
+      body.is-loading .app-shell {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .loading-screen {
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+        display: grid;
+        place-items: center;
+        padding: 2rem;
+        background:
+          radial-gradient(circle at 45% 36%, rgb(255 255 255 / 0.78), transparent 11rem),
+          linear-gradient(135deg, rgb(255 246 230 / 0.98), rgb(255 236 198 / 0.94));
+      }
+
+      .loading-card {
+        width: min(100%, 24rem);
+        padding: 1.5rem;
+        border: 2px solid var(--color-text);
+        border-radius: 1.25rem;
+        background: rgb(255 250 240 / 0.92);
+        box-shadow: 0 22px 60px var(--color-ink-shadow);
+        text-align: center;
+      }
+
+      .loading-mark {
+        display: inline-block;
+        width: 2.75rem;
+        height: 2.75rem;
+        margin-bottom: 0.9rem;
+        border: 0.45rem solid var(--color-border);
+        border-top-color: var(--color-primary);
+        border-radius: 999px;
+        animation: loading-turn 850ms linear infinite;
+      }
+
+      .loading-title {
+        margin: 0 0 0.35rem;
+        font-family: var(--font-display);
+        font-size: 1.65rem;
+        line-height: 1;
+      }
+
+      .loading-copy,
+      .noscript-message {
+        margin: 0;
+        color: var(--color-muted-text);
+        line-height: 1.5;
+      }
+
+      .noscript-message {
+        position: relative;
+        z-index: 11;
+        padding: 1rem;
+        border-bottom: 2px solid var(--color-border);
+        background: #fffaf0;
+        text-align: center;
+      }
+
+      @keyframes loading-turn {
+        to { transform: rotate(1turn); }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .loading-mark { animation: none; }
+      }
+    </style>
   </head>
-  <body>
-    <main class="app-shell" aria-labelledby="app-title">
+  <body class="is-loading">
+    <noscript>
+      <style>
+        body.is-loading .loading-screen,
+        body.is-loading .app-shell {
+          display: none;
+        }
+      </style>
+      <p class="noscript-message">JavaScript is required to load, save, and interact with your tasks in smiple-todo.</p>
+    </noscript>
+    <div class="loading-screen" data-loading-screen role="status" aria-live="polite" aria-label="Loading your tasks">
+      <div class="loading-card">
+        <span class="loading-mark" aria-hidden="true"></span>
+        <p class="loading-title">Gathering your tasks</p>
+        <p class="loading-copy">Loading your local todo list...</p>
+      </div>
+    </div>
+    <main class="app-shell" data-app-shell aria-labelledby="app-title">
       <header class="app-header">
         <p class="eyebrow">Simple local todo list</p>
         <h1 id="app-title">smiple-todo</h1>

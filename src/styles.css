@@ -78,6 +78,23 @@ input:focus-visible {
   width: min(100%, 44rem);
   margin: 0 auto;
   padding: var(--space-5) var(--space-3);
+  opacity: 1;
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+body.is-loading .app-shell {
+  transform: translateY(0.35rem);
+}
+
+body.is-ready .loading-screen {
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 180ms ease, visibility 180ms ease;
+}
+
+.loading-screen[hidden] {
+  display: none;
 }
 
 .app-header {
