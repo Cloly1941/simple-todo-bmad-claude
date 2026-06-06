@@ -4,7 +4,7 @@ dist
 .env.*
 .DS_Store
 _bmad
-_bmad-output
+_bmad-output/
 .claude
 CLAUDE.md
 skills-lock.json
