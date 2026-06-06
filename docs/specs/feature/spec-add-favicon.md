@@ -17,7 +17,7 @@ route: 'one-shot'
 ## Suggested Review Order
 
 - The document head declares the browser-tab icon entry point.
-  [index.html:6](../../index.html#L6)
+  [index.html:6](../../../index.html#L6)
 
 - The SVG favicon uses the app's warm palette and todo-check motif.
-  [favicon.svg:1](../../public/favicon.svg#L1)
+  [favicon.svg:1](../../../public/favicon.svg#L1)
