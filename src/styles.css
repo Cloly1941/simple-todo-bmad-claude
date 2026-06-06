@@ -158,10 +158,6 @@ h2 {
   animation: rise-in 560ms ease-out both;
 }
 
-.task-panel {
-  transform: rotate(-0.35deg);
-}
-
 .task-section {
   animation-delay: 90ms;
 }
@@ -186,13 +182,12 @@ h2 {
   background: var(--color-surface-strong);
   color: var(--color-text);
   box-shadow: inset 0 0 0 1px rgb(255 209 102 / 0.45);
-  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
 }
 
 .task-input:focus {
   border-color: var(--color-focus);
   box-shadow: inset 0 0 0 1px rgb(10 111 104 / 0.32), 0 0 0 5px rgb(10 111 104 / 0.12);
-  transform: translateY(-1px);
 }
 
 .task-input[aria-invalid="true"] {
@@ -205,6 +200,9 @@ h2 {
 }
 
 .add-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 3.25rem;
   padding: 0.9rem 1.35rem;
   border: 2px solid var(--color-text);
@@ -431,6 +429,9 @@ h2 {
 }
 
 .task-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-width: 2.75rem;
   min-height: 2.75rem;
   padding: 0.62rem 0.78rem;
@@ -537,7 +538,7 @@ h2 {
 
   .task-input-row {
     grid-template-columns: 1fr auto;
-    align-items: center;
+    align-items: stretch;
   }
 
   .add-button {
@@ -551,6 +552,20 @@ h2 {
 
   .task-actions {
     grid-column: 1 / -1;
+  }
+
+  .task-item--editing {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .task-item--editing .task-actions {
+    grid-column: auto;
+    align-self: end;
+    justify-content: end;
+  }
+
+  .task-item--editing .task-action {
+    min-height: 3.15rem;
   }
 }
 
