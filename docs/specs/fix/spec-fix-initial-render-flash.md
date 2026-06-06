@@ -94,29 +94,29 @@ The critical inline CSS should make `.loading-screen` presentable before externa
 **First-paint loading shell**
 
 - Critical inline styles make the loader presentable before external assets.
-  [`index.html:7`](../../index.html#L7)
+  [`index.html:7`](../../../index.html#L7)
 
 - Initial loading state hides unfinished app markup immediately.
-  [`index.html:104`](../../index.html#L104)
+  [`index.html:104`](../../../index.html#L104)
 
 - Accessible loader communicates progress without exposing inactive controls.
-  [`index.html:108`](../../index.html#L108)
+  [`index.html:108`](../../../index.html#L108)
 
 - No-JS fallback prevents an infinite loading promise.
-  [`index.html:105`](../../index.html#L105)
+  [`index.html:105`](../../../index.html#L105)
 
 **App reveal behavior**
 
 - Initial render now dismisses loading in a guarded path.
-  [`main.js:14`](../../src/main.js#L14)
+  [`main.js:14`](../../../src/main.js#L14)
 
 - Ready marker reveals app and hides loader after transition.
-  [`main.js:143`](../../src/main.js#L143)
+  [`main.js:143`](../../../src/main.js#L143)
 
 - Loaded-state CSS preserves Warm Minimal polish.
-  [`styles.css:76`](../../src/styles.css#L76)
+  [`styles.css:76`](../../../src/styles.css#L76)
 
 **Regression coverage**
 
 - App-shell tests protect loader, noscript, and reveal behavior.
-  [`app-shell.test.js:10`](../../src/app-shell.test.js#L10)
+  [`app-shell.test.js:10`](../../../src/app-shell.test.js#L10)
